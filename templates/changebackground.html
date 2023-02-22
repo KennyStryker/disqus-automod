@@ -1,0 +1,66 @@
+{% extends "base_nav.html" %}
+{% block title %}
+<title>Change Background</title>
+{% endblock %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/changebackground.css')}}"/>
+{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-center h-100">
+    <div class="card">
+      {% if get_flashed_messages() %} {% for category, message in
+      get_flashed_messages(with_categories=true) %}
+      <div class="alert alert-{{ category }}">
+        <center>{{message}}</center>
+      </div>
+      {% endfor %} {% endif %}
+      <div class="card-header">
+        <h3>
+          <center>Change Background</center>
+        </h3>
+      </div>
+      <div class="card-body">
+        <form
+          class="form-changebackground"
+          action="/changebackground/"
+          method="POST"
+          enctype = "multipart/form-data"
+        >
+          <div class="input-group form-group">
+            <div class="card-header">
+                <label class="custom-file-label" for="customFile">Upload file</label>
+                <input type="file" class="custom-file-input" id="customFile" name="bg_image" accept=".jpg,.jpeg,.png">
+            </div>
+          </div>
+
+          {% if session['bg_image'] %}
+          <div class="form-group">
+            <input
+              type="submit"
+              name="action"
+              value="Remove Background"
+              class="btn float-left login_btn"
+            />
+          </div>
+          {% endif %}
+          <div class="form-group">
+            <input
+              type="submit"
+              name="action"
+              value="Change Background"
+              class="btn float-right login_btn"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+<script>
+    // Add the following code if you want the name of the file appear on select
+    $(".custom-file-input").on("change", function() {
+      var fileName = $(this).val().split("\\").pop();
+      console.log($(this).val())
+      $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+    </script>
+{% endblock %}
